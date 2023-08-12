@@ -30,9 +30,12 @@ app.get("/discord", async (req:Request,res:Response)=>{
     await client.login(botToken)
 
     client.on("ready", async ()=>{
-        
+        const channel = await client.channels.fetch(process.env.ALERT_CHANNEL as string)
+        if (channel && channel.isTextBased()){
+            await channel.send(alert as string)
+            res.json({message: "Alert has been sent!"})
+        }
     })
-
 
 
 })
